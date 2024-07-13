@@ -1,5 +1,6 @@
 ﻿using GasPoint.Core.Entities;
 using GasPoint.Core.Interfaces;
+using GasPoint.Core.Transaccion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,18 @@ namespace GasPoint.Infrastructure.Services
 
         public async Task<ApiResponse<T>> GetClientByTelephoneAsync<T>(string token, string url, string numero) where T : class
         {
-            return await this.SendAsync<T>(new ApiRequest(token, url, numero));
+            url = url + $"/{numero}";
+            var resultado = await this.SendAsync<T>(new ApiRequest(token, url, null,"GET"));
+
+            return resultado;
+        }
+
+
+        public async Task<ApiResponse<T>> CreateTransaccionAsync<T>(string token, string url, TransaccionDTO parametros) where T : class
+        {
+            var resultado = await this.SendAsync<T>(new ApiRequest(token, url, parametros));
+
+            return resultado;
         }
     }
 }
