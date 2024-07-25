@@ -10,11 +10,30 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="8.0.0" />
+    <PackageReference Include="ReportViewerCore.WinForms" Version="15.1.21" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\GasPoint.Core\GasPoint.Core.csproj" />
     <ProjectReference Include="..\GasPoint.Infrastructure\GasPoint.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Datasets\HoseDelivery.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>HoseDelivery.xsd</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Datasets\HoseDelivery.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>HoseDelivery.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="Reports\Ticket.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

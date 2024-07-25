@@ -13,11 +13,11 @@ namespace GasPoint.Core.Entities
 
         public string Url { get; set; }
 
-        public Object Data { get; set; }
+        public Object? Data { get; set; }
 
         public string AccessToken { get; set; }
 
-        public ApiRequest(string token, string url, Object data, string apiType = "POST")
+        public ApiRequest(string token, string url, Object? data, string apiType = "POST")
         {
             AccessToken = token;
             Url = url;

@@ -47,6 +47,8 @@
             label7 = new Label();
             txtPuntos = new TextBox();
             groupBox2 = new GroupBox();
+            txtVolumen = new TextBox();
+            label9 = new Label();
             txtHoseID = new TextBox();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -142,7 +144,7 @@
             // 
             // btnEnviar
             // 
-            btnEnviar.Location = new Point(239, 239);
+            btnEnviar.Location = new Point(294, 238);
             btnEnviar.Name = "btnEnviar";
             btnEnviar.Size = new Size(94, 29);
             btnEnviar.TabIndex = 3;
@@ -163,7 +165,7 @@
             txtNombre.Enabled = false;
             txtNombre.Location = new Point(198, 46);
             txtNombre.Name = "txtNombre";
-            txtNombre.Size = new Size(197, 27);
+            txtNombre.Size = new Size(289, 27);
             txtNombre.TabIndex = 11;
             // 
             // groupBox1
@@ -177,7 +179,7 @@
             groupBox1.Controls.Add(txtTelefono);
             groupBox1.Location = new Point(12, 12);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(528, 89);
+            groupBox1.Size = new Size(606, 89);
             groupBox1.TabIndex = 12;
             groupBox1.TabStop = false;
             groupBox1.Text = "Datos del Cliente";
@@ -193,7 +195,7 @@
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(427, 22);
+            label8.Location = new Point(522, 22);
             label8.Name = "label8";
             label8.Size = new Size(53, 20);
             label8.TabIndex = 14;
@@ -202,7 +204,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(257, 22);
+            label7.Location = new Point(312, 22);
             label7.Name = "label7";
             label7.Size = new Size(64, 20);
             label7.TabIndex = 13;
@@ -211,13 +213,15 @@
             // txtPuntos
             // 
             txtPuntos.Enabled = false;
-            txtPuntos.Location = new Point(401, 46);
+            txtPuntos.Location = new Point(493, 46);
             txtPuntos.Name = "txtPuntos";
             txtPuntos.Size = new Size(103, 27);
             txtPuntos.TabIndex = 12;
             // 
             // groupBox2
             // 
+            groupBox2.Controls.Add(txtVolumen);
+            groupBox2.Controls.Add(label9);
             groupBox2.Controls.Add(txtHoseID);
             groupBox2.Controls.Add(cbxPosicion);
             groupBox2.Controls.Add(label3);
@@ -230,10 +234,27 @@
             groupBox2.Controls.Add(label1);
             groupBox2.Location = new Point(12, 107);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(528, 108);
+            groupBox2.Size = new Size(606, 116);
             groupBox2.TabIndex = 13;
             groupBox2.TabStop = false;
             groupBox2.Text = "Datos de la Venta";
+            // 
+            // txtVolumen
+            // 
+            txtVolumen.Enabled = false;
+            txtVolumen.Location = new Point(510, 57);
+            txtVolumen.Name = "txtVolumen";
+            txtVolumen.Size = new Size(86, 27);
+            txtVolumen.TabIndex = 11;
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new Point(522, 23);
+            label9.Name = "label9";
+            label9.Size = new Size(67, 20);
+            label9.TabIndex = 10;
+            label9.Text = "Volumen";
             // 
             // txtHoseID
             // 
@@ -246,7 +267,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(558, 280);
+            ClientSize = new Size(633, 280);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
             Controls.Add(btnEnviar);
@@ -284,5 +305,7 @@
         private Label label7;
         private TextBox txtIdCliente;
         private TextBox txtHoseID;
+        private Label label9;
+        private TextBox txtVolumen;
     }
 }

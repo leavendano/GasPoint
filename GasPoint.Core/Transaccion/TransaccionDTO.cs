@@ -11,7 +11,10 @@ namespace GasPoint.Core.Transaccion
         public int HoseDeliveryId { get; set; }
         public int ClienteId { get; set; }
         public int EstacionId { get; set; }
-        public string Fecha { get; set; }
+        public string? Fecha { get; set; }
         public decimal Importe { get; set; }
+        public decimal Volumen {  get; set; }
+        public int ProductoId { get; set; }
+        public int Puntos { get; set; }
     }
 }

@@ -1,6 +1,8 @@
 using GasPoint.Core.Cliente;
+using GasPoint.Core.HoseDelivery;
 using GasPoint.Core.Interfaces;
 using GasPoint.Core.Transaccion;
+using Microsoft.Reporting.WinForms;
 
 namespace GasPoint
 {
@@ -8,11 +10,14 @@ namespace GasPoint
     {
         private readonly IEnablerService _enablerService;
         private readonly ICloudService _cloudService;
+        private int GradeId;
+        private HoseDeliveryResponseDTO respuesta;
         public FormMain(IEnablerService service, ICloudService cloudService)
         {
             InitializeComponent();
             _enablerService = service;
             _cloudService = cloudService;
+            GradeId = 0;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -27,43 +32,70 @@ namespace GasPoint
             int selectedIndex = cmb.SelectedIndex + 1;
             if (selectedIndex > 0)
             {
-                var respuesta = _enablerService.GetLastDeliveryByHostID(selectedIndex);
+                respuesta = _enablerService.GetLastDeliveryByHostID(selectedIndex);
                 txtHoseID.Text = respuesta.Delivery_ID.ToString();
                 txtFecha.Text = respuesta.Completed_TS.ToString();
                 txtProducto.Text = respuesta.GradeName;
                 txtImporte.Text = respuesta.Delivery_Value.ToString();
+                txtVolumen.Text = respuesta.Delivery_Volume.ToString();
+                GradeId = respuesta.Grade_ID;
             }
             else
             {
                 txtFecha.Text = "";
                 txtProducto.Text = "";
                 txtImporte.Text = "";
+                GradeId = 0;
             }
         }
 
         private async void button1_Click(object sender, EventArgs e)
         {
-            if(txtHoseID.Text != "")
+            try
             {
-                var fecha = DateTime.Parse(txtFecha.Text);
-                var task = _cloudService.CreateTransaccionAsync<TransaccionDTO>("", "https://localhost:7003/Transacciones", new TransaccionDTO
-                {
-                    HoseDeliveryId = int.Parse(txtHoseID.Text),
-                    ClienteId = int.Parse(txtIdCliente.Text),
-                    EstacionId = 1,
-                    Fecha = fecha.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"),
-                    Importe = decimal.Parse(txtImporte.Text)
-                });
 
-                var response = await task;
-                if (response.Success)
+
+                if (txtHoseID.Text != "")
                 {
-                    MessageBox.Show("La transaccion se guardo con exito!");
+                    var fecha = DateTime.Parse(txtFecha.Text);
+                    var task = _cloudService.CreateTransaccionAsync<TransaccionResponseDTO>("", "https://localhost:7003/Transacciones", new TransaccionDTO
+                    {
+                        HoseDeliveryId = int.Parse(txtHoseID.Text),
+                        ClienteId = int.Parse(txtIdCliente.Text),
+                        EstacionId = 1,
+                        Fecha = fecha.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                        Importe = decimal.Parse(txtImporte.Text),
+                        Volumen = decimal.Parse(txtVolumen.Text),
+                        ProductoId = GradeId
+                    });
+
+                    var response = await task;
+                    if (response.Success)
+                    {
+                        var responseData = response.Data.FirstOrDefault();
+                        MessageBox.Show("La transaccion se guardo con exito! Puntos Obtenidos=" + responseData.Puntos.ToString());
+                        respuesta.Puntos = responseData.Puntos;
+                        // report.ReportPath = Application.StartupPath
+                        TextReader fs = System.IO.File.OpenText(Application.StartupPath + "\\Reports\\Ticket.rdlc");
+                        var reportViewer = new Visor();
+                        var report = reportViewer.GetReport();
+                        report.LoadReportDefinition(fs);
+                        report.DataSources.Add(new ReportDataSource("HoseDelivery", new List<HoseDeliveryResponseDTO>()
+                        {
+                            respuesta
+                        }));
+                        reportViewer.RefreshReport();
+                        reportViewer.Show();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Hubo un error al guadar los datos:" + response.Error);
+                    }
                 }
-                else
-                {
-                    MessageBox.Show("Hubo un error al guadar los datos:" + response.Error);
-                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ocurrió un error:" + ex.Message);
             }
 
             txtNombre.Text = "";
@@ -71,6 +103,8 @@ namespace GasPoint
             txtPuntos.Text = "";
             txtHoseID.Text = "";
             txtTelefono.Text = "";
+            txtVolumen.Text = "";
+            GradeId = 0;
             txtTelefono.Focus();
             cbxPosicion.SelectedIndex = -1;
         }
@@ -94,6 +128,11 @@ namespace GasPoint
 
 
 
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+           
         }
     }
 }

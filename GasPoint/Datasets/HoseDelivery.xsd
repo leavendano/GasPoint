@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="HoseDelivery" targetNamespace="http://tempuri.org/HoseDelivery.xsd" xmlns:mstns="http://tempuri.org/HoseDelivery.xsd" xmlns="http://tempuri.org/HoseDelivery.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="HoseDelivery" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_UserDSName="HoseDelivery" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="HoseDelivery">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="HoseDelivery" msprop:Generator_RowClassName="HoseDeliveryRow" msprop:Generator_RowEvHandlerName="HoseDeliveryRowChangeEventHandler" msprop:Generator_RowDeletedName="HoseDeliveryRowDeleted" msprop:Generator_RowDeletingName="HoseDeliveryRowDeleting" msprop:Generator_RowEvArgName="HoseDeliveryRowChangeEvent" msprop:Generator_TablePropName="_HoseDelivery" msprop:Generator_RowChangedName="HoseDeliveryRowChanged" msprop:Generator_UserTableName="HoseDelivery" msprop:Generator_RowChangingName="HoseDeliveryRowChanging" msprop:Generator_TableClassName="HoseDeliveryDataTable" msprop:Generator_TableVarName="tableHoseDelivery">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Delivery_ID" msprop:Generator_UserColumnName="Delivery_ID" msprop:Generator_ColumnPropNameInTable="Delivery_IDColumn" msprop:Generator_ColumnPropNameInRow="Delivery_ID" msprop:Generator_ColumnVarNameInTable="columnDelivery_ID" type="xs:int" minOccurs="0" />
+              <xs:element name="Hose_ID" msprop:Generator_UserColumnName="Hose_ID" msprop:Generator_ColumnPropNameInTable="Hose_IDColumn" msprop:Generator_ColumnPropNameInRow="Hose_ID" msprop:Generator_ColumnVarNameInTable="columnHose_ID" type="xs:int" minOccurs="0" />
+              <xs:element name="Grade_ID" msprop:Generator_UserColumnName="Grade_ID" msprop:Generator_ColumnPropNameInTable="Grade_IDColumn" msprop:Generator_ColumnPropNameInRow="Grade_ID" msprop:Generator_ColumnVarNameInTable="columnGrade_ID" type="xs:int" minOccurs="0" />
+              <xs:element name="GradeName" msprop:Generator_UserColumnName="GradeName" msprop:Generator_ColumnPropNameInTable="GradeNameColumn" msprop:Generator_ColumnPropNameInRow="GradeName" msprop:Generator_ColumnVarNameInTable="columnGradeName" type="xs:string" minOccurs="0" />
+              <xs:element name="Completed_TS" msprop:Generator_UserColumnName="Completed_TS" msprop:Generator_ColumnPropNameInTable="Completed_TSColumn" msprop:Generator_ColumnPropNameInRow="Completed_TS" msprop:Generator_ColumnVarNameInTable="columnCompleted_TS" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="Delivery_Volume" msprop:Generator_UserColumnName="Delivery_Volume" msprop:Generator_ColumnPropNameInTable="Delivery_VolumeColumn" msprop:Generator_ColumnPropNameInRow="Delivery_Volume" msprop:Generator_ColumnVarNameInTable="columnDelivery_Volume" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Delivery_Value" msprop:Generator_UserColumnName="Delivery_Value" msprop:Generator_ColumnPropNameInTable="Delivery_ValueColumn" msprop:Generator_ColumnPropNameInRow="Delivery_Value" msprop:Generator_ColumnVarNameInTable="columnDelivery_Value" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Puntos" msprop:Generator_ColumnPropNameInRow="Puntos" msprop:Generator_ColumnPropNameInTable="PuntosColumn" msprop:Generator_ColumnVarNameInTable="columnPuntos" msprop:Generator_UserColumnName="Puntos" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

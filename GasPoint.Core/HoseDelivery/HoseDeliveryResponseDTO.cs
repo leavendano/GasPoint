@@ -15,5 +15,6 @@ namespace GasPoint.Core.HoseDelivery
         public DateTime Completed_TS { get; set; }
         public decimal Delivery_Volume { get; set; }
         public decimal Delivery_Value { get; set; }
+        public int Puntos { get; set; } = 0;
     }
 }
