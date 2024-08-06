@@ -1,6 +1,7 @@
 using GasPoint.Core.Cliente;
 using GasPoint.Core.HoseDelivery;
 using GasPoint.Core.Interfaces;
+using GasPoint.Core.Recompensa;
 using GasPoint.Core.Transaccion;
 using Microsoft.Reporting.WinForms;
 
@@ -58,11 +59,12 @@ namespace GasPoint
                 if (txtHoseID.Text != "")
                 {
                     var fecha = DateTime.Parse(txtFecha.Text);
-                    var task = _cloudService.CreateTransaccionAsync<TransaccionResponseDTO>("", "https://localhost:7003/Transacciones", new TransaccionDTO
+                    var task = _cloudService.CreateTransaccionAsync<TransaccionResponseDTO>("", "https://localhost:7003/Api/Transacciones", new TransaccionDTO
                     {
                         HoseDeliveryId = int.Parse(txtHoseID.Text),
                         ClienteId = int.Parse(txtIdCliente.Text),
                         EstacionId = 1,
+                        Posicion = cbxPosicion.SelectedIndex + 1,
                         Fecha = fecha.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"),
                         Importe = decimal.Parse(txtImporte.Text),
                         Volumen = decimal.Parse(txtVolumen.Text),
@@ -73,19 +75,31 @@ namespace GasPoint
                     if (response.Success)
                     {
                         var responseData = response.Data.FirstOrDefault();
-                        MessageBox.Show("La transaccion se guardo con exito! Puntos Obtenidos=" + responseData.Puntos.ToString());
+                        DialogResult dialogResult = MessageBox.Show("La transaccion se guardo con exito! Puntos Obtenidos=" 
+                            + responseData.Puntos.ToString() + ". Deseas imprimir el ticket?","Respuesta", MessageBoxButtons.YesNo);
                         respuesta.Puntos = responseData.Puntos;
                         // report.ReportPath = Application.StartupPath
-                        TextReader fs = System.IO.File.OpenText(Application.StartupPath + "\\Reports\\Ticket.rdlc");
-                        var reportViewer = new Visor();
-                        var report = reportViewer.GetReport();
-                        report.LoadReportDefinition(fs);
-                        report.DataSources.Add(new ReportDataSource("HoseDelivery", new List<HoseDeliveryResponseDTO>()
+                        if(dialogResult == DialogResult.Yes)
                         {
-                            respuesta
-                        }));
-                        reportViewer.RefreshReport();
-                        reportViewer.Show();
+                            TextReader fs = System.IO.File.OpenText(Application.StartupPath + "\\Reports\\Ticket.rdlc");
+                            var reportViewer = new Visor();
+                            var report = reportViewer.GetReport();
+                            report.LoadReportDefinition(fs);
+                            report.DataSources.Add(new ReportDataSource("HoseDelivery", new List<HoseDeliveryResponseDTO>()
+                            {
+                                respuesta
+                            }));
+                            var resultRecompensas = await _cloudService.GetAllRecompensasAsync<RecompensaDTO>("", "https://localhost:7003/Api/Recompensas");
+                            if(resultRecompensas.Success)
+                            {
+                                report.DataSources.Add(new ReportDataSource("Recompensas", resultRecompensas.Data));
+                            }
+                            report.SetParameters(new ReportParameter("NombreCliente", txtNombre.Text));
+                            reportViewer.RefreshReport();
+                            reportViewer.Show();
+                            
+                        }
+                        
                     }
                     else
                     {
@@ -111,7 +125,7 @@ namespace GasPoint
 
         private async void txtTelefono_LeaveAsync(object sender, EventArgs e)
         {
-            var task = _cloudService.GetClientByTelephoneAsync<ClienteResponseDTO>("", "https://localhost:7003/Clientes", txtTelefono.Text);
+            var task = _cloudService.GetClientByTelephoneAsync<ClienteResponseDTO>("", "https://localhost:7003/Api/Clientes", txtTelefono.Text);
             var response = await task;
 
             if (response != null && response.Success)
