@@ -30,5 +30,12 @@ namespace GasPoint.Infrastructure.Services
 
             return resultado;
         }
+
+        public async Task<ApiResponse<T>> GetAllRecompensasAsync<T>(string token, string url) where T : class
+        {
+            var resultado = await this.SendAsync<T>(new ApiRequest(token, url, null, "GET"));
+
+            return resultado;
+        }
     }
 }

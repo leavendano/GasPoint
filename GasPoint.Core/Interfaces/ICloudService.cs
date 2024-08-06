@@ -12,5 +12,7 @@ namespace GasPoint.Core.Interfaces
     {
         Task<ApiResponse<T>> GetClientByTelephoneAsync<T>(string token, string url, string numero) where T : class;
         Task<ApiResponse<T>> CreateTransaccionAsync<T>(string token, string url, TransaccionDTO parametros) where T : class;
+
+        Task<ApiResponse<T>> GetAllRecompensasAsync<T>(string token, string url) where T : class;
     }
 }
