@@ -10,18 +10,19 @@ namespace GasPoint.Infrastructure.Services
 {
     public class EnablerService : IEnablerService
     {
-        //IConfiguration _config;
-        //public EnablerService(IConfiguration configuration)
-        //{
-        //    _config = configuration; 
-        //}
+        private readonly IConfiguration _configuration;
+
+        public EnablerService(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
         public  HoseDeliveryResponseDTO? GetLastDeliveryByHostID(int hoseID)
         {
 
 
             // var connString = _config["ConnectionStrings:DefaultConnection"];
-            var connString = "Server=.;Database=EnablerDB;Trusted_Connection=True;User ID=sa; Password=o1r8;TrustServerCertificate=true;";
-
+           // var connString = "Server=192.168.1.64;Database=EnablerDB;Trusted_Connection=True;User ID=sa; Password=newton01;TrustServerCertificate=true;";
+            string connString = _configuration["ConnectionStrings:DefaultConnection"];
             try
             {
                 

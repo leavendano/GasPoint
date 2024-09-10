@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
     <PackageReference Include="ReportViewerCore.WinForms" Version="15.1.21" />
   </ItemGroup>
 
@@ -27,6 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Datasets\HoseDelivery.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>HoseDelivery.Designer.cs</LastGenOutput>

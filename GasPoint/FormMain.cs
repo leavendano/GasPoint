@@ -3,6 +3,7 @@ using GasPoint.Core.HoseDelivery;
 using GasPoint.Core.Interfaces;
 using GasPoint.Core.Recompensa;
 using GasPoint.Core.Transaccion;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Reporting.WinForms;
 
 namespace GasPoint
@@ -11,13 +12,15 @@ namespace GasPoint
     {
         private readonly IEnablerService _enablerService;
         private readonly ICloudService _cloudService;
+        private readonly IConfiguration _configuration;
         private int GradeId;
         private HoseDeliveryResponseDTO respuesta;
-        public FormMain(IEnablerService service, ICloudService cloudService)
+        public FormMain(IEnablerService service, ICloudService cloudService, IConfiguration configuration)
         {
             InitializeComponent();
             _enablerService = service;
             _cloudService = cloudService;
+            _configuration = configuration;
             GradeId = 0;
         }
 
@@ -25,6 +28,9 @@ namespace GasPoint
         {
             txtTelefono.Mask = "(000) 000-0000";
             txtTelefono.Focus();
+            var listaPos = _configuration.GetSection("PosList").Get<List<int>>();
+            string[] arregloPos = listaPos.Select(i => i.ToString()).ToArray();
+            cbxPosicion.Items.AddRange(arregloPos);
         }
 
         private void cbxPosicion_SelectedIndexChanged(object sender, EventArgs e)
@@ -54,12 +60,11 @@ namespace GasPoint
         {
             try
             {
-
-
                 if (txtHoseID.Text != "")
                 {
                     var fecha = DateTime.Parse(txtFecha.Text);
-                    var task = _cloudService.CreateTransaccionAsync<TransaccionResponseDTO>("", "https://localhost:7003/Api/Transacciones", new TransaccionDTO
+                    var baseUrl = _configuration["CloudUrl"];
+                    var task = _cloudService.CreateTransaccionAsync<TransaccionResponseDTO>("", baseUrl + "/Api/Transacciones", new TransaccionDTO
                     {
                         HoseDeliveryId = int.Parse(txtHoseID.Text),
                         ClienteId = int.Parse(txtIdCliente.Text),
@@ -89,7 +94,7 @@ namespace GasPoint
                             {
                                 respuesta
                             }));
-                            var resultRecompensas = await _cloudService.GetAllRecompensasAsync<RecompensaDTO>("", "https://localhost:7003/Api/Recompensas");
+                            var resultRecompensas = await _cloudService.GetAllRecompensasAsync<RecompensaDTO>("", baseUrl + "/Api/Recompensas");
                             if(resultRecompensas.Success)
                             {
                                 report.DataSources.Add(new ReportDataSource("Recompensas", resultRecompensas.Data));
@@ -125,7 +130,8 @@ namespace GasPoint
 
         private async void txtTelefono_LeaveAsync(object sender, EventArgs e)
         {
-            var task = _cloudService.GetClientByTelephoneAsync<ClienteResponseDTO>("", "https://localhost:7003/Api/Clientes", txtTelefono.Text);
+            var baseUrl = _configuration["CloudUrl"];
+            var task = _cloudService.GetClientByTelephoneAsync<ClienteResponseDTO>("", baseUrl + "/Api/Clientes", txtTelefono.Text);
             var response = await task;
 
             if (response != null && response.Success)

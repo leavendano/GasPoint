@@ -1,9 +1,10 @@
 using Autofac;
 using GasPoint.Core.Interfaces;
 
+
 namespace GasPoint
 {
-    internal static class Program
+    public static class Program
     {
         /// <summary>
         ///  The main entry point for the application.
@@ -13,6 +14,7 @@ namespace GasPoint
         {
 
             ApplicationConfiguration.Initialize();
+           
 
             var container = ContainerConfig.Configure();
 
