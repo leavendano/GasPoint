@@ -4,6 +4,7 @@ using System.Data;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
+using System.Data.Odbc;
 
 
 namespace GasPoint.Infrastructure.Services
@@ -22,17 +23,17 @@ namespace GasPoint.Infrastructure.Services
 
             // var connString = _config["ConnectionStrings:DefaultConnection"];
            // var connString = "Server=192.168.1.64;Database=EnablerDB;Trusted_Connection=True;User ID=sa; Password=newton01;TrustServerCertificate=true;";
-            string connString = _configuration["ConnectionStrings:DefaultConnection"];
+            string connString = _configuration["ConnectionStrings:DsnConnection"];
             try
             {
                 
 
-                using (SqlConnection cnn = new(connString))
+                using (OdbcConnection cnn = new(connString))
                 {
                     cnn.Open();
 
                     // Se establece el orden de interpretaci�n de las fechas a a�o mes dia
-                    using (SqlCommand sqlCmd = new("set dateformat ymd", cnn))
+                    using (OdbcCommand sqlCmd = new("set dateformat ymd", cnn))
                     {
 
                         sqlCmd.CommandType = CommandType.Text;
@@ -44,7 +45,7 @@ namespace GasPoint.Infrastructure.Services
                         sqlCmd.CommandType = CommandType.Text;
                        
 
-                        SqlDataReader reader = sqlCmd.ExecuteReader();
+                        var reader = sqlCmd.ExecuteReader();
                         if (reader.Read())
                         {
                             var resultado = new HoseDeliveryResponseDTO
