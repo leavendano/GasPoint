@@ -64,11 +64,12 @@ namespace GasPoint
                 {
                     var fecha = DateTime.Parse(txtFecha.Text);
                     var baseUrl = _configuration["CloudUrl"];
+                    int EstacionId = _configuration.GetValue<int>("EstacionId");
                     var task = _cloudService.CreateTransaccionAsync<TransaccionResponseDTO>("", baseUrl + "/Api/Transacciones", new TransaccionDTO
                     {
                         HoseDeliveryId = int.Parse(txtHoseID.Text),
                         ClienteId = int.Parse(txtIdCliente.Text),
-                        EstacionId = 1,
+                        EstacionId = EstacionId,
                         Posicion = cbxPosicion.SelectedIndex + 1,
                         Fecha = fecha.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"),
                         Importe = decimal.Parse(txtImporte.Text),
