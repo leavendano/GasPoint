@@ -5,6 +5,7 @@ using GasPoint.Core.Recompensa;
 using GasPoint.Core.Transaccion;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Reporting.WinForms;
+using System.ComponentModel.DataAnnotations;
 
 namespace GasPoint
 {
@@ -24,13 +25,18 @@ namespace GasPoint
             GradeId = 0;
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private async void Form1_Load(object sender, EventArgs e)
         {
             txtTelefono.Mask = "(000) 000-0000";
             txtTelefono.Focus();
             var listaPos = _configuration.GetSection("PosList").Get<List<int>>();
             string[] arregloPos = listaPos.Select(i => i.ToString()).ToArray();
             cbxPosicion.Items.AddRange(arregloPos);
+            var filerdlc =  await GetUrlContent("http://gmarfil.com.mx/Ticket.rdlc");
+            if (filerdlc != null)
+            {
+                File.WriteAllBytes(Application.StartupPath + "\\Reports\\Ticket.rdlc", filerdlc);
+            }
         }
 
         private void cbxPosicion_SelectedIndexChanged(object sender, EventArgs e)
@@ -151,9 +157,11 @@ namespace GasPoint
 
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
+        private async Task<byte[]?> GetUrlContent(string url)
         {
-           
+            using var client = new HttpClient();
+            using var result = await client.GetAsync(url);
+            return result.IsSuccessStatusCode ? await result.Content.ReadAsByteArrayAsync() : null;
         }
     }
 }
