@@ -23,5 +23,7 @@ namespace GasPoint.Core.Transaccion
         public decimal Volumen {  get; set; }
         [JsonPropertyName("puntos")]
         public int Puntos { get; set; }
+        [JsonPropertyName("nombreEstacion")]
+        public string NombreEstacion { get; set; } = string.Empty;
     }
 }

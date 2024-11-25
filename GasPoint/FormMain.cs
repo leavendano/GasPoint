@@ -32,7 +32,7 @@ namespace GasPoint
             var listaPos = _configuration.GetSection("PosList").Get<List<int>>();
             string[] arregloPos = listaPos.Select(i => i.ToString()).ToArray();
             cbxPosicion.Items.AddRange(arregloPos);
-            var filerdlc =  await GetUrlContent("http://gmarfil.com.mx/Ticket.rdlc");
+            var filerdlc = await GetUrlContent("http://gmarfil.com.mx/Ticket.rdlc");
             if (filerdlc != null)
             {
                 File.WriteAllBytes(Application.StartupPath + "\\Reports\\Ticket.rdlc", filerdlc);
@@ -106,10 +106,15 @@ namespace GasPoint
                             {
                                 report.DataSources.Add(new ReportDataSource("Recompensas", resultRecompensas.Data));
                             }
-                            report.SetParameters(new ReportParameter("NombreCliente", txtNombre.Text));
+                           // report.SetParameters(new ReportParameter("NombreCliente", txtNombre.Text));
+                            report.SetParameters(new List<ReportParameter>()
+                            {
+                                new ReportParameter("NombreCliente", txtNombre.Text),
+                                new ReportParameter("NombreEstacion", responseData.NombreEstacion)
+                            });
                             reportViewer.RefreshReport();
-                            reportViewer.Show();
-                            
+                            //reportViewer.Show();
+                            report.PrintToPrinter();
                         }
                         
                     }
